@@ -1,0 +1,8 @@
+- id: duckdb
+  short_name: DuckDB
+	description: "An in-process SQL OLAP database management system"
+  url: "https://duckdb.org/"
+- id: polars
+  short_name: Polars
+  description: "A blazingly fast DataFrame library implemented in Rust"
+  url: "https://pola.rs/"

@@ -1,0 +1,6 @@
+- id: local_csv
+  short_name: "Local CSV"
+  description: "A CSV file stored on the local filesystem"
+- id: oracle
+  short_name: "Oracle"
+  description: "The relational database management system by Oracle"

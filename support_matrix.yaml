@@ -1,0 +1,36 @@
+duckdb:
+  local_csv:
+    import:
+      supported: true
+      evidence: "https://duckdb.org/docs/data/csv/overview.html"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/guides/file_formats/csv_export.html"
+  oracle:
+    import:
+      supported: false
+      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+    export:
+      supported: false
+      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+polars:
+  local_csv:
+    import:
+      supported: true
+      evidence: "https://docs.pola.rs/user-guide/io/csv/"
+    export:
+      supported: true
+      evidence: "https://docs.pola.rs/user-guide/io/csv/"
+  oracle:
+    import:
+      supported: true
+      evidence: |
+        Via ConnectorX, see https://docs.pola.rs/user-guide/io/database/#connectorx
+
+        ConnectorX docs: https://sfu-db.github.io/connector-x/databases/oracle.html
+    export:
+      supported: true
+      evidence: |
+        Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
+
+        SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/oracle.html
