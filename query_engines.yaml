@@ -1,6 +1,6 @@
 - id: duckdb
   short_name: DuckDB
-	description: "An in-process SQL OLAP database management system"
+  description: "An in-process SQL OLAP database management system"
   url: "https://duckdb.org/"
 - id: polars
   short_name: Polars
