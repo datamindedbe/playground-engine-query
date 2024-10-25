@@ -1,33 +1,43 @@
-use std::{collections::HashMap, fs, panic};
+use std::{collections::HashMap, panic};
 
 use leptos::*;
 use serde::Deserialize;
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct QueryEngine {
     id: String,
     short_name: String,
     description: String,
     url: String,
+    logo: String
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct Integration {
     id: String,
     short_name: String,
     description: String,
+    logo: String
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct Feature {
     supported: bool,
     evidence: String,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, Clone)]
 struct IntegrationSupport {
     import: Feature,
     export: Feature,
+}
+
+#[derive(Debug)]
+struct ClickedCell {
+    query_engine: QueryEngine,
+    integration: Integration,
+    mouse_x: i32,
+    mouse_y: i32
 }
 
 const ENGINES: &str = include_str!("../query_engines.yaml");
@@ -42,47 +52,77 @@ fn main() {
     let integrations: Vec<Integration> =
         serde_yaml::from_str(INTEGRATIONS).expect("Unable to parse YAML");
 
-    let parsed_data: HashMap<String, HashMap<String, IntegrationSupport>> =
+    let support_matrix: HashMap<String, HashMap<String, IntegrationSupport>> =
         serde_yaml::from_str(SUPPORT_MATRIX).expect("Failed to parse YAML");
 
+    let (
+        clicked_on_cell,
+        set_clicked_on_cell
+    ) = leptos::create_signal(None);
+
+    let (support_matrix, _) = leptos::create_signal(support_matrix);
+
+    let (filtered_integrations, _set_filtered_integrations) = leptos::create_signal(integrations.clone());
+    let (filtered_query_engines, _set_filtered_query_engines) = leptos::create_signal(query_engines.clone());
+
     mount_to_body(move || {
-        // view! {
-        //    <p>{format!("{:?}", query_engines)}</p>
-        //    <p>{format!("{:?}", integrations)}</p>
-        //     <p>{format!("{:?}", parsed_data)}</p>
-
-        // }
-
-        let row_keys: Vec<_> = parsed_data.keys().cloned().collect();
-        let mut column_keys = std::collections::HashSet::new();
-        for row in parsed_data.values() {
-            for col in row.keys() {
-                column_keys.insert(col.clone());
-            }
-        }
-        let column_keys: Vec<_> = column_keys.into_iter().collect();
-
         view! {
             <h1>"Engine Query"</h1>
-            <table>
+            <table class="styled-table">
                 <thead>
                     <tr>
                         <th></th>
-                        {column_keys.iter().map(|col| view! { <th>{col}</th> }).collect::<Vec<_>>()}
+                        <For
+                            each=filtered_integrations
+                            key=|i| i.id.clone()
+                            let:integration
+                        > 
+                            <th>
+                                <img class="logo-small" src={format!("static/images/{}", integration.logo)} />
+                                <span class="logo-text">{&integration.short_name}</span>
+                            </th>
+                        </For>
                     </tr>
                 </thead>
                 <tbody>
-                    {row_keys.iter().map(|row| view! {
+                    <For
+                        each=filtered_query_engines
+                        key=|qe| qe.id.clone()
+                        let:qe
+                    >
                         <tr>
-                            <td>{row}</td>
-                            {column_keys.iter().map(|col| {
-                                let cell_data = parsed_data.get(row).and_then(|inner| inner.get(col));
-                                view! {
-                                    <td>
-                                        {if let Some(support) = cell_data {
+                            <td>
+                                <img class="logo-small" src={format!("static/images/{}", qe.logo)} />
+                                <span class="logo-text">{&qe.short_name}</span>
+                            </td>
+                            <For
+                                each=filtered_integrations
+                                key=|i| i.id.clone()
+                                let:integration
+                            >
+                                <td
+                                    on:click={
+                                        // TODO: not sure if all these clone()s are necessary
+                                        let qe = qe.clone();
+                                        let integration = integration.clone();
+                                        move |mouse_event| {
+                                            set_clicked_on_cell(
+                                                Some(ClickedCell {
+                                                    query_engine: qe.clone(),
+                                                    integration: integration.clone(),
+                                                    mouse_x: mouse_event.client_x(),
+                                                    mouse_y: mouse_event.client_y()
+                                                })
+                                            )
+                                        }
+                                    }
+                                >
+                                    {
+                                        let support = support_matrix.get().get(&qe.id).and_then(|qe_support_map| qe_support_map.get(&integration.id)).cloned();
+                                        if let Some(support) = support {
                                             view! {
-                                                <p>
-                                                     {
+                                                <div class="support-cell">
+                                                    {
                                                         match (support.import.supported, support.export.supported) {
                                                             (true, true) => "✅",
                                                             (true, false) => "🔎",
@@ -90,17 +130,20 @@ fn main() {
                                                             (false, false) => "❌",
                                                         }
                                                     }
-                                                </p>
-
+                                                </div>
                                             }
                                         } else {
-                                            view! {<p>"N/A"</p> }
-                                        }}
-                                    </td>
-                                }
-                            }).collect::<Vec<_>>()}
+                                            view! {
+                                                <div class="support-cell">
+                                                    "❓"
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                </td>
+                            </For>
                         </tr>
-                    }).collect::<Vec<_>>()}
+                    </For>
                 </tbody>
             </table>
         }

@@ -1,0 +1,35 @@
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table th, .styled-table td {
+    padding: 10px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.styled-table th {
+    background-color: #f4f4f4;
+    vertical-align: middle;
+}
+
+.styled-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.styled-table td:hover {
+    background-color: #ddd;
+}
+
+.logo-small {
+    max-width: 30px;
+    max-height: 60px;
+    width: auto;
+    height: auto;
+    vertical-align: middle;
+}
+
+.logo-text {
+    padding-left: 0.5rem;
+}
