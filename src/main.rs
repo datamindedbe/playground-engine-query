@@ -39,20 +39,63 @@ fn main() {
     let query_engines: Vec<QueryEngine> =
         serde_yaml::from_str(ENGINES).expect("Unable to parse YAML");
 
-    let integrations: Vec<Feature> =
+    let integrations: Vec<Integration> =
         serde_yaml::from_str(INTEGRATIONS).expect("Unable to parse YAML");
 
     let parsed_data: HashMap<String, HashMap<String, IntegrationSupport>> =
         serde_yaml::from_str(SUPPORT_MATRIX).expect("Failed to parse YAML");
 
-    // let debug_qe = format!("{:?}", query_engines);
-
     mount_to_body(move || {
-        view! {
-           <p>{format!("{:?}", query_engines)}</p>
-           <p>{format!("{:?}", integrations)}</p>
-            <p>{format!("{:?}", parsed_data)}</p>
+        // view! {
+        //    <p>{format!("{:?}", query_engines)}</p>
+        //    <p>{format!("{:?}", integrations)}</p>
+        //     <p>{format!("{:?}", parsed_data)}</p>
 
+        // }
+
+        let row_keys: Vec<_> = parsed_data.keys().cloned().collect();
+        let mut column_keys = std::collections::HashSet::new();
+        for row in parsed_data.values() {
+            for col in row.keys() {
+                column_keys.insert(col.clone());
+            }
+        }
+        let column_keys: Vec<_> = column_keys.into_iter().collect();
+
+        view! {
+            <h1>"Integration Support Matrix"</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>"System"</th>
+                        {column_keys.iter().map(|col| view! { <th>{col}</th> }).collect::<Vec<_>>()}
+                    </tr>
+                </thead>
+                <tbody>
+                    {row_keys.iter().map(|row| view! {
+                        <tr>
+                            <td>{row}</td>
+                            {column_keys.iter().map(|col| {
+                                let cell_data = parsed_data.get(row).and_then(|inner| inner.get(col));
+                                view! {
+                                    <td>
+                                        {if let Some(support) = cell_data {
+                                            view! {
+                                                <div>
+                                                    <p><strong>"Import"</strong>: "Supported: "{support.import.supported.to_string()}, "Evidence: "{&support.import.evidence}</p>
+                                                    <p><strong>"Export"</strong>: "Supported: "{support.export.supported.to_string()}, "Evidence: "{&support.export.evidence}</p>
+                                                </div>
+                                            }
+                                        } else {
+                                            view! {<div><p>"N/A"</p> </div>}
+                                        }}
+                                    </td>
+                                }
+                            }).collect::<Vec<_>>()}
+                        </tr>
+                    }).collect::<Vec<_>>()}
+                </tbody>
+            </table>
         }
     })
 }
