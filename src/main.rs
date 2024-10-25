@@ -81,13 +81,20 @@ fn main() {
                                     <td>
                                         {if let Some(support) = cell_data {
                                             view! {
-                                                <div>
-                                                    <p><strong>"Import"</strong>: "Supported: "{support.import.supported.to_string()}, "Evidence: "{&support.import.evidence}</p>
-                                                    <p><strong>"Export"</strong>: "Supported: "{support.export.supported.to_string()}, "Evidence: "{&support.export.evidence}</p>
-                                                </div>
+                                                <p>
+                                                     {
+                                                        match (support.import.supported, support.export.supported) {
+                                                            (true, true) => "✅",
+                                                            (true, false) => "🔎",
+                                                            (false, true) => "✍️",
+                                                            (false, false) => "❌",
+                                                        }
+                                                    }
+                                                </p>
+
                                             }
                                         } else {
-                                            view! {<div><p>"N/A"</p> </div>}
+                                            view! {<p>"N/A"</p> }
                                         }}
                                     </td>
                                 }
