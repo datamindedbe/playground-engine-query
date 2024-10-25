@@ -63,11 +63,11 @@ fn main() {
         let column_keys: Vec<_> = column_keys.into_iter().collect();
 
         view! {
-            <h1>"Integration Support Matrix"</h1>
+            <h1>"Engine Query"</h1>
             <table>
                 <thead>
                     <tr>
-                        <th>"System"</th>
+                        <th></th>
                         {column_keys.iter().map(|col| view! { <th>{col}</th> }).collect::<Vec<_>>()}
                     </tr>
                 </thead>
