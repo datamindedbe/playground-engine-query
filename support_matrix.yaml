@@ -1,7 +1,7 @@
 duckdb:
   local_csv:
     import:
-      supported: false
+      supported: true
       evidence: "https://duckdb.org/docs/data/csv/overview.html"
     export:
       supported: true

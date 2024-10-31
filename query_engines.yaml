@@ -1,10 +1,72 @@
 - id: duckdb
-  short_name: DuckDB
+  short_name: "DuckDB"
   description: "An in-process SQL OLAP database management system"
   url: "https://duckdb.org/"
   logo: "duckdb.jfif"
 - id: polars
-  short_name: Polars
+  short_name: "Polars"
   description: "A blazingly fast DataFrame library implemented in Rust"
   url: "https://pola.rs/"
   logo: "polars.png"
+- id: spark
+  short_name: "Spark"
+  description: "Apache Spark is an open-source unified analytics engine for large-scale data processing"
+  url: "https://spark.apache.org/"
+  logo: "spark.webp"
+- id: snowflake
+  short_name: "Snowflake"
+  description: "Managed cloud data platform"
+  url: "https://snowflake.com/"
+  logo: "snowflake.png"
+- id: athena
+  short_name: "Athena"
+  description: "An interactive query service that makes it easy to analyze data in Amazon S3 using standard SQL"
+  url: "https://aws.amazon.com/athena/"
+  logo: "athena.png"
+- id: fabric
+  short_name: "Fabric"
+  description: "An end-to-end analytics and data platform designed for enterprises that require a unified solution"
+  url: "https://www.fabric.io/"
+  logo: "fabric.webp"
+- id: synapse
+  short_name: "Synapse"
+  description: "Azure Synapse Analytics is a limitless analytics service that brings together enterprise SQL data warehousing and big data analytics services"
+  url: "https://azure.microsoft.com/en-us/products/synapse-analytics"
+  logo: "synapse.png"
+- id: impala
+  short_name: "Impala"
+  description: "Modern, open source, distributed SQL query engine for open data and table formats by Apache"
+  url: "https://impala.apache.org/"
+  logo: "impala.png"
+- id: trino
+  short_name: "Trino"
+  description: "Open-source distributed SQL query engine designed to query large data sets distributed over one or more heterogeneous data sources"
+  url: "https://trino.io/"
+  logo: "trino.png"
+- id: starburst
+  short_name: "Starburst"
+  description: "Enterprise managed Trino"
+  url: "https://www.starburst.io/"
+  logo: "starburst.png"
+- id: bigquery
+  short_name: "BigQuery"
+  description: "Serverless, cost-effective, multicloud data warehouse by Google."
+  url: "https://cloud.google.com/bigquery"
+  logo: "bigquery.svg"
+- id: hive
+  short_name: "Hive"
+  description: "Distributed, fault-tolerant warehouse infrastructure built on top of Hadoop"
+  url: "https://hive.apache.org/"
+  logo: "hive.png"
+- id: redshift
+  short_name: "Redshift"
+  description: "A fully managed, petabyte-scale data warehouse service by AWS"
+  url: "https://aws.amazon.com/redshift/"
+  logo: "redshift.png"
+
+# Todo:
+# Presto
+# StarRocks
+# Dremio
+# Meltano?
+# dlt?

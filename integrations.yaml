@@ -1,8 +1,48 @@
 - id: local_csv
   short_name: "Local CSV"
-  description: "A CSV file stored on the local filesystem"
-  logo: "csv.jpg"
+  description: "A CSV file on the local filesystem"
+  logo: "csv.png"
+- id: local_parquet
+  short_name: "Local Parquet"
+  description: "A Parquet file on the local filesystem"
+  logo: "parquet.png"
+- id: local_json
+  short_name: "Local JSON"
+  description: "A JSON file on the local filesystem"
+  logo: "json.png"
+- id: csv_on_s3
+  short_name: "CSV on S3"
+  description: "A CSV file on S3"
+  logo: "s3.png"
+- id: csv_on_azure
+  short_name: "CSV on Azure"
+  description: "CSV Azure blob storage"
+  logo: "azure-blob-storage.png"
+- id: csv_on_google_cloud_storage
+  short_name: "CSV on GCP"
+  description: "CSV on Google cloud storage"
+  logo: "google-cloud-storage.png"
 - id: oracle
   short_name: "Oracle"
   description: "The relational database management system by Oracle"
   logo: "oracle.png"
+- id: mysql
+  short_name: "MySQL"
+  description: "An open-source relational database management system"
+  logo: "mysql.png"
+- id: sql_server
+  short_name: "SQL Server"
+  description: "A proprietary relational database management system developed by Microsoft"
+  logo: "sql-server.svg"
+- id: postgres
+  short_name: "PostgreSQL"
+  description: "Free and open-source relational database management system (RDBMS) emphasizing extensibility and SQL compliance"
+  logo: "postgres.png"
+- id: mongodb
+  short_name: "MongoDB"
+  description: >
+    MongoDB is a source-available, cross-platform, document-oriented database program.
+    Classified as a NoSQL database product, MongoDB utilizes JSON-like documents with
+    optional schemas. MongoDB is developed by MongoDB Inc. and current versions are
+    licensed under the Server Side Public License.
+  logo: "mongodb.png"

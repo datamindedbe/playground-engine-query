@@ -1,6 +1,9 @@
+mod markdown;
+
 use std::{collections::HashMap, panic};
 
 use leptos::*;
+use markdown::Markdown;
 use serde::Deserialize;
 
 #[derive(Debug, Deserialize, Clone)]
@@ -32,7 +35,7 @@ struct IntegrationSupport {
     export: Feature,
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 struct ClickedCell {
     query_engine: QueryEngine,
     integration: Integration,
@@ -67,7 +70,11 @@ fn main() {
 
     mount_to_body(move || {
         view! {
+            <div class="content">
             <h1>"Engine Query"</h1>
+            <p>
+                Answer all your queries about query engines.
+            </p>
             <table class="styled-table">
                 <thead>
                     <tr>
@@ -78,8 +85,12 @@ fn main() {
                             let:integration
                         > 
                             <th>
-                                <img class="logo-small" src={format!("static/images/{}", integration.logo)} />
-                                <span class="logo-text">{&integration.short_name}</span>
+                                <div class="logo-in-th-container"><img class="logo-in-th" src={format!("static/images/{}", integration.logo)} /></div>
+                                <div class="th-rotated-text">
+                                    <span>
+                                        {&integration.short_name}
+                                    </span>
+                                </div>
                             </th>
                         </For>
                     </tr>
@@ -101,6 +112,7 @@ fn main() {
                                 let:integration
                             >
                                 <td
+                                    class="support-matrix-cell-td"
                                     on:click={
                                         // TODO: not sure if all these clone()s are necessary
                                         let qe = qe.clone();
@@ -121,7 +133,7 @@ fn main() {
                                         let support = support_matrix.get().get(&qe.id).and_then(|qe_support_map| qe_support_map.get(&integration.id)).cloned();
                                         if let Some(support) = support {
                                             view! {
-                                                <div class="support-cell">
+                                                <div class="support-matrix-cell">
                                                     {
                                                         match (support.import.supported, support.export.supported) {
                                                             (true, true) => "✅",
@@ -146,6 +158,115 @@ fn main() {
                     </For>
                 </tbody>
             </table>
+            <p>
+            <b>Legend:</b>
+                <ul>
+                    <li>"✅ = Can read & write"</li>
+                    <li>"🔎 = Can read but not write"</li>
+                    <li>"✍️ = Can write but not read"</li>
+                    <li>"❌ = Not supported"</li>
+                    <li>"❓ = Unknown ("<a href="https://github.com/datamindedbe/playground-engine-query/edit/main/support_matrix.yaml">"please contribute!"</a>")"</li>
+                </ul>
+            </p>
+            {
+                move || {
+                    if let Some(c) = clicked_on_cell.get() {
+                        let support = support_matrix.get().get(&c.query_engine.id).and_then(|qe_support_map| qe_support_map.get(&c.integration.id)).cloned();
+                        view! {
+                            <div class="support-details-popup" style={move || format!("--clicked-at-x: {}px; --clicked-at-y: {}px;", c.mouse_x, c.mouse_y)}>
+                                <img
+                                    class="popup-close-button"
+                                    src="static/images/cross-mark.png"
+                                    on:click={
+                                        move |_mouse_event| {
+                                            set_clicked_on_cell(None)
+                                        }
+                                    }
+                                />
+                                <p class="popup-subtitle">"Can "
+                                    <img class="logo-small" src={format!("static/images/{}", c.query_engine.logo)} />
+                                    <span class="logo-text">{&c.query_engine.short_name}</span>
+                                    " "
+                                    <span class="popup-subtitle-emphasis">"read"</span>
+                                    " from "
+                                    <img class="logo-small" src={format!("static/images/{}", c.integration.logo)} />
+                                    <span class="logo-text">{&c.integration.short_name}</span>
+                                    " ?"
+                                </p>
+                                <p>
+                                {
+                                    if let Some(support) = &support {
+                                        if support.import.supported {
+                                            view! {
+                                                <div>
+                                                    <p><span class="popup-yesno">"Yes."</span></p>
+                                                    <p><Markdown src={support.import.evidence.clone()} /></p>
+                                                </div>
+                                            }
+                                        } else {
+                                            view! {
+                                                <div>
+                                                    <p><span class="popup-yesno">"No."</span></p>
+                                                    <p><Markdown src={support.import.evidence.clone()} /></p>
+                                                </div>
+                                            }
+                                        }
+                                    } else {
+                                        view! {
+                                            <div>
+                                                <p>"Unknown ("<a href="https://github.com/datamindedbe/playground-engine-query/edit/main/support_matrix.yaml">"please contribute!"</a>")"</p>
+                                            </div>
+                                        }   
+                                    }
+                                }
+                                </p>
+                                <p class="popup-subtitle">"Can "
+                                    <img class="logo-small" src={format!("static/images/{}", c.query_engine.logo)} />
+                                    <span class="logo-text">{&c.query_engine.short_name}</span>
+                                    " "
+                                    <span class="popup-subtitle-emphasis">"write"</span>
+                                    " to "
+                                    <img class="logo-small" src={format!("static/images/{}", c.integration.logo)} />
+                                    <span class="logo-text">{&c.integration.short_name}</span>
+                                    " ?"
+                                </p>
+                                <p>
+                                {
+                                    if let Some(support) = &support {
+                                        if support.export.supported {
+                                            view! {
+                                                <div>
+                                                    <p><span class="popup-yesno">"Yes."</span></p>
+                                                    <p><Markdown src={support.export.evidence.clone()} /></p>
+                                                </div>
+                                            }
+                                        } else {
+                                            view! {
+                                                <div>
+                                                    <p><span class="popup-yesno">"No."</span></p>
+                                                    <p><Markdown src={support.export.evidence.clone()} /></p>
+                                                </div>
+                                            }
+                                        }
+                                    } else {
+                                        view! {
+                                            <div>
+                                                <p>"Unknown ("<a href="https://github.com/datamindedbe/playground-engine-query/edit/main/support_matrix.yaml">"please contribute!"</a>")"</p>
+                                            </div>
+                                        }   
+                                    }
+                                }
+                                </p>
+                            </div>
+                        }
+                    } else {
+                        view! {
+                            <div style="display: hidden;" />
+                        }
+                    }
+                }
+            }
+            </div>
         }
     })
 }

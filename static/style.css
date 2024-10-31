@@ -1,25 +1,93 @@
-.styled-table {
+h1 {
+    font-size: 2.5rem;
+    font-family: "El Messiri", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: "DM Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+    background: rgb(246, 245, 253);
+    display: flex;
+    justify-content: center;
+    padding: 0px;
+    margin: 0px;
+}
+
+.content {
     width: 100%;
+    max-width: 1200px;
+    background: rgb(238, 236, 252);
+    padding-top: 20px;
+    padding-left: clamp(0px, calc((100vw - 1200px) * 0.3), 80px); 
+    padding-right: clamp(0px, calc((100vw - 1200px) * 0.3), 80px); 
+    min-height: 100vh;
+}
+
+.styled-table {
     border-collapse: collapse;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 70px;
 }
 
 .styled-table th, .styled-table td {
     padding: 10px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid rgb(160, 158, 172);
 }
 
 .styled-table th {
-    background-color: #f4f4f4;
+    background-color: rgb(203, 200, 218);
     vertical-align: middle;
 }
 
-.styled-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+.styled-table tr:nth-child(odd) {
+    background-color: rgb(241, 239, 250);
 }
 
-.styled-table td:hover {
-    background-color: #ddd;
+.styled-table tr:nth-child(even) {
+    background-color: rgb(236, 234, 247);
+}
+
+.support-matrix-cell-td:hover {
+    background-color: rgb(196, 191, 233);
+    cursor: pointer;
+}
+
+.th-rotated-text {
+    width: 40px;
+    height: 40px;
+    white-space: nowrap;
+    transform:
+        translate(40px, -50px)
+        rotate(315deg);
+}
+
+.th-rotated-text > span {
+    border-bottom: 1px solid #ccc;
+    padding: 5px 10px;
+}
+
+.logo-in-th-container {
+    position: relative;
+    left: 0px;
+    top: 0px;
+    vertical-align: middle;
+    align-items: center;
+}
+
+.logo-in-th {
+    max-width: 35px;
+    max-height: 35px;
+    width: auto;
+    height: auto;
+    position: absolute;
+    left: 0px;
+    top: 0px;
 }
 
 .logo-small {
@@ -32,4 +100,48 @@
 
 .logo-text {
     padding-left: 0.5rem;
+}
+
+.support-details-popup {
+    position: absolute;
+    background-color: #fff;
+    width: 400px;
+    border: solid #aaa;
+    border-width: 1px;
+    border-radius: 5px;
+    margin: 10px;
+    padding: 10px;
+
+    /* Calculate left and right so the element does not go off-screen */
+    left: 0px;
+    top: 0px;
+    transform: translate(
+        max(0px, min(calc(100vw - 100% - 20px), var(--clicked-at-x))),
+        max(0px, min(calc(100vh - 100% - 20px), var(--clicked-at-y)))
+    );
+}
+
+.popup-label {
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.popup-subtitle {
+    font-weight: bold;
+}
+
+.popup-subtitle-emphasis {
+    text-decoration: underline;
+}
+
+/* .popup-yesno {
+    font-weight: bold;
+} */
+
+.popup-close-button {
+    cursor: pointer;
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 35px;
 }
