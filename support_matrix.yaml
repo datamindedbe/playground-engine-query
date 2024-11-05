@@ -6,6 +6,27 @@ duckdb:
     export:
       supported: true
       evidence: "https://duckdb.org/docs/guides/file_formats/csv_export.html"
+  local_parquet:
+    import:
+      supported: true
+      evidence: "https://duckdb.org/docs/data/parquet/overview.html#read_parquet-function"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/data/parquet/overview.html#writing-to-parquet-files"
+  local_json:
+    import:
+      supported: true
+      evidence: "https://duckdb.org/docs/data/json/overview#loading-json"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/data/json/overview#writing-json"
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: "https://domoredata.tech/unleashing-the-power-of-duckdb-with-remote-s3-files/"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/extensions/httpfs/s3api.html#writing"
   oracle:
     import:
       supported: false
