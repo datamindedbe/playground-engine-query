@@ -110,3 +110,15 @@ polars:
         Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
 
         SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/oracle.html
+spark:
+  mongodb:
+    import:
+      supported: true
+      evidence: |
+        Support for both batch (https://www.mongodb.com/docs/spark-connector/current/batch-mode/batch-read/) and 
+        streaming (https://www.mongodb.com/docs/spark-connector/current/streaming-mode/streaming-read/)
+    export:
+      supported: true
+      evidence: |
+        Support for both batch (https://www.mongodb.com/docs/spark-connector/current/batch-mode/batch-write/) and 
+        streaming (https://www.mongodb.com/docs/spark-connector/current/streaming-mode/streaming-write-config/)
