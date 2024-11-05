@@ -27,13 +27,68 @@ duckdb:
     export:
       supported: true
       evidence: "https://duckdb.org/docs/extensions/httpfs/s3api.html#writing"
+  csv_on_azure:
+    import:
+      supported: true
+      evidence: |
+        Both by the native DuckDB Azure extension and fsspec (adlfs) library.
+        https://medium.com/datamindedbe/quacking-queries-in-the-azure-cloud-with-duckdb-14be50f6e141
+    export:
+      supported: true
+      evidence: |
+        Only via fsspec (adlfs): https://medium.com/datamindedbe/quacking-queries-in-the-azure-cloud-with-duckdb-14be50f6e141
+  csv_on_google_cloud_storage:
+    import:
+      supported: true
+      evidence: |
+        Both by the native DuckDB https extension and fsspec (gcsfs) library.
+        https://duckdb.org/docs/guides/network_cloud_storage/gcs_import.html
+    export:
+      supported: true
+      evidence: |
+        Via fsspec (gcsfs): https://duckdb.org/docs/guides/python/filesystems
+        You could also use Google HMAC and use the S3 API extension: https://duckdb.org/docs/extensions/httpfs/s3api.html
   oracle:
     import:
       supported: false
-      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+      evidence: |
+        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension.
+        See also "https://github.com/duckdb/duckdb/discussions/10928"
     export:
       supported: false
-      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+      evidence: |
+        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension.
+        See also "https://github.com/duckdb/duckdb/discussions/10928"
+  mysql:
+    import:
+      supported: true
+      evidence: "https://duckdb.org/docs/extensions/mysql.html#reading-data-from-mysql"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/extensions/mysql.html#writing-data-to-mysql"
+  postgres:
+    import:
+      supported: true
+      evidence: "https://duckdb.org/docs/extensions/postgres.html#installing-and-loading"
+    export:
+      supported: true
+      evidence: "https://duckdb.org/docs/extensions/postgres.html#writing-data-to-postgresql"
+  sql_server:
+    import:
+      supported: false
+      evidence: |
+        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
+    export:
+      supported: false
+      evidence: |
+        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
+  mongodb:
+    import:
+      supported: false
+      evidence: No documentation available
+    export:
+      supported: false
+      evidence: No documentation available
 polars:
   local_csv:
     import:
