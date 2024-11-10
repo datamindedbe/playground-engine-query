@@ -27,6 +27,7 @@ struct Integration {
 struct Feature {
     supported: bool,
     evidence: String,
+    caveats: Option<String>
 }
 
 #[derive(Debug, Deserialize, Clone)]
@@ -131,25 +132,25 @@ fn main() {
                                 >
                                     {
                                         let support = support_matrix.get().get(&qe.id).and_then(|qe_support_map| qe_support_map.get(&integration.id)).cloned();
-                                        if let Some(support) = support {
-                                            view! {
-                                                <div class="support-matrix-cell">
-                                                    {
-                                                        match (support.import.supported, support.export.supported) {
-                                                            (true, true) => "✅",
-                                                            (true, false) => "🔎",
-                                                            (false, true) => "✍️",
-                                                            (false, false) => "❌",
-                                                        }
-                                                    }
-                                                </div>
-                                            }
+                                        let support_text = if let Some(support) = support {
+                                            let support_text = match (support.import.supported, support.export.supported) {
+                                                (true, true) => "✅",
+                                                (true, false) => "🔎",
+                                                (false, true) => "✍️",
+                                                (false, false) => "❌",
+                                            };
+                                            let has_caveats = support.import.caveats.is_some() || support.export.caveats.is_some();
+                                            let caveats_text = if has_caveats {
+                                                "*"
+                                            } else {
+                                                ""
+                                            };
+                                            format!("{}{}", support_text, caveats_text)
                                         } else {
-                                            view! {
-                                                <div class="support-cell">
-                                                    "❓"
-                                                </div>
-                                            }
+                                            "❓".to_string()
+                                        };
+                                        view! {
+                                            <div class="support-matrix-cell">{ support_text }</div>
                                         }
                                     }
                                 </td>
@@ -196,18 +197,23 @@ fn main() {
                                 <p>
                                 {
                                     if let Some(support) = &support {
+                                        let evidence_str = if let Some(caveats) = &support.import.caveats {
+                                            format!("{}\n\n⚠️ {}", support.import.evidence, caveats)
+                                        } else {
+                                            support.import.evidence.clone()
+                                        };
                                         if support.import.supported {
                                             view! {
                                                 <div>
                                                     <p><span class="popup-yesno">"Yes."</span></p>
-                                                    <p><Markdown src={support.import.evidence.clone()} /></p>
+                                                    <p><Markdown src={evidence_str} /></p>
                                                 </div>
                                             }
                                         } else {
                                             view! {
                                                 <div>
                                                     <p><span class="popup-yesno">"No."</span></p>
-                                                    <p><Markdown src={support.import.evidence.clone()} /></p>
+                                                    <p><Markdown src={evidence_str} /></p>
                                                 </div>
                                             }
                                         }
@@ -233,18 +239,23 @@ fn main() {
                                 <p>
                                 {
                                     if let Some(support) = &support {
+                                        let evidence_str = if let Some(caveats) = &support.export.caveats {
+                                            format!("{}\n\n⚠️ {}", support.export.evidence, caveats)
+                                        } else {
+                                            support.export.evidence.clone()
+                                        };
                                         if support.export.supported {
                                             view! {
                                                 <div>
                                                     <p><span class="popup-yesno">"Yes."</span></p>
-                                                    <p><Markdown src={support.export.evidence.clone()} /></p>
+                                                    <p><Markdown src={evidence_str} /></p>
                                                 </div>
                                             }
                                         } else {
                                             view! {
                                                 <div>
                                                     <p><span class="popup-yesno">"No."</span></p>
-                                                    <p><Markdown src={support.export.evidence.clone()} /></p>
+                                                    <p><Markdown src={evidence_str} /></p>
                                                 </div>
                                             }
                                         }

@@ -51,14 +51,14 @@ duckdb:
   oracle:
     import:
       supported: false
-      evidence: |
+      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+      caveats: |
         Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension.
-        See also "https://github.com/duckdb/duckdb/discussions/10928"
     export:
       supported: false
-      evidence: |
+      evidence: "https://github.com/duckdb/duckdb/discussions/10928"
+      caveats: |
         Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension.
-        See also "https://github.com/duckdb/duckdb/discussions/10928"
   mysql:
     import:
       supported: true
@@ -77,11 +77,15 @@ duckdb:
     import:
       supported: false
       evidence: |
-        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
+        Not supported natively
+      caveats: |
+       Might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
     export:
       supported: false
       evidence: |
-        Not supported natively, but might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
+        Not supported natively
+      caveats: |
+       Might be possible via a third-party extension over ODBC: https://github.com/rupurt/odbc-scanner-duckdb-extension
   mongodb:
     import:
       supported: false
@@ -89,6 +93,7 @@ duckdb:
     export:
       supported: false
       evidence: No documentation available
+
 polars:
   local_csv:
     import:
@@ -97,6 +102,31 @@ polars:
     export:
       supported: true
       evidence: "https://docs.pola.rs/user-guide/io/csv/"
+  local_parquet:
+    import:
+      supported: true
+      evidence: https://docs.pola.rs/api/python/stable/reference/api/polars.read_parquet.html
+    export:
+      supported: true
+      evidence: https://docs.pola.rs/api/python/stable/reference/api/polars.DataFrame.write_parquet.html
+  local_json:
+    import:
+      supported: true
+      evidence: https://docs.pola.rs/api/python/stable/reference/api/polars.read_json.html
+    export:
+      supported: true
+      evidence: https://docs.pola.rs/api/python/stable/reference/api/polars.DataFrame.write_json.html
+  csv_on_s3: &polars_rw_via_fsspec
+    import:
+      supported: true
+      evidence: |
+        Via fsspec, see https://docs.pola.rs/user-guide/io/cloud-storage/
+    export:
+      supported: true
+      evidence: |
+        Via fsspec, see https://docs.pola.rs/user-guide/io/cloud-storage/
+  csv_on_azure: *polars_rw_via_fsspec
+  csv_on_google_cloud_storage: *polars_rw_via_fsspec
   oracle:
     import:
       supported: true
@@ -110,3 +140,392 @@ polars:
         Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
 
         SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/oracle.html
+  mysql:
+    import:
+      supported: true
+      evidence: |
+        Via ConnectorX, see https://docs.pola.rs/user-guide/io/database/#connectorx
+
+        ConnectorX docs: https://sfu-db.github.io/connector-x/databases/mysql.html
+    export:
+      supported: true
+      evidence: |
+        Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
+
+        SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/mysql.html
+  sql_server:
+    import:
+      supported: true
+      evidence: |
+        Via ConnectorX, see https://docs.pola.rs/user-guide/io/database/#connectorx
+
+        ConnectorX docs: https://sfu-db.github.io/connector-x/databases/mssql.html
+    export:
+      supported: true
+      evidence: |
+        Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
+
+        SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/mssql.html
+  postgres:
+    import:
+      supported: true
+      evidence: |
+        Via ConnectorX, see https://docs.pola.rs/user-guide/io/database/#connectorx
+
+        ConnectorX docs: https://sfu-db.github.io/connector-x/databases/postgres.html
+    export:
+      supported: true
+      evidence: |
+        Via SQLAlchemy, see https://docs.pola.rs/user-guide/io/database/#sqlalchemy
+
+        SQLAlchemy docs: https://docs.sqlalchemy.org/en/20/dialects/postgresql.html
+  mongodb:
+    import:
+      supported: true
+      evidence: |
+        https://www.mongodb.com/docs/languages/python/pymongo-arrow-driver/current/quick-start/#find-operations
+      caveats: |
+        Requires external package PyMongoArrow
+    export:
+      supported: true
+      evidence: |
+        https://www.mongodb.com/docs/languages/python/pymongo-arrow-driver/current/quick-start/#find-operations
+      caveats: |
+        Requires external package PyMongoArrow
+spark:
+  local_csv:
+    import:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-csv.html
+    export:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-csv.html
+  local_parquet:
+    import:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-parquet.html
+    export:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-parquet.html
+  local_json:
+    import:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-json.html
+    export:
+      supported: true
+      evidence: https://spark.apache.org/docs/3.5.1/sql-data-sources-json.html
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: |
+        After installing Hadoop-AWS, see https://stackoverflow.com/a/68921812
+      caveats: |
+        Requires Hadoop-AWS module, see https://hadoop.apache.org/docs/stable/hadoop-aws/tools/hadoop-aws/index.html
+    export:
+      supported: true
+      evidence: |
+        Using Hadoop-AWS, see https://hadoop.apache.org/docs/stable/hadoop-aws/tools/hadoop-aws/index.html#How_S3A_writes_data_to_S3
+      caveats: |
+        Requires Hadoop-AWS module, see https://hadoop.apache.org/docs/stable/hadoop-aws/tools/hadoop-aws/index.html
+  csv_on_azure:
+    import: &spark_csv_on_azure
+      supported: true
+      evidence: |
+        Possible via hadoop-azure, see https://koiralo.com/2018/02/12/how-to-data-from-azure-blob-storage-with-apache-spark/
+      caveats: |
+        Requires Hadoop-azure module
+    export: *spark_csv_on_azure
+  csv_on_google_cloud_storage:
+    import: &spark_csv_on_gcs
+      supported: true
+      evidence: |
+        Possible via hadoop-connectors, see https://stackoverflow.com/a/60913959
+      caveats: |
+        Involves "dependency hell", see https://stackoverflow.com/questions/60813631/pyspark-how-to-read-a-csv-file-in-google-bucket
+    export: *spark_csv_on_gcs
+  oracle: &spark_jdbc
+    import:
+      supported: true
+      evidence: |
+        Can use JDBC. There is a buit-in connection provider to DB2, MariaDB, MSSql, Oracle and PostgreSQL.
+
+        See https://spark.apache.org/docs/3.5.1/sql-data-sources-jdbc.html
+    export:
+      supported: true
+      evidence: |
+        Can use JDBC. There is a buit-in connection provider to DB2, MariaDB, MSSql, Oracle and PostgreSQL.
+
+        See https://spark.apache.org/docs/3.5.1/sql-data-sources-jdbc.html
+  mysql: *spark_jdbc
+  sql_server: *spark_jdbc
+  postgres: *spark_jdbc
+  mongodb:
+    import:
+      supported: true
+      evidence: https://www.mongodb.com/docs/spark-connector/current/
+    export:
+      supported: true
+      evidence: https://www.mongodb.com/docs/spark-connector/current/
+snowflake:
+  local_csv:
+    import: &snowflake_local_file_import
+      supported: true
+      evidence: |
+        By creating a "stage", see https://docs.snowflake.com/en/sql-reference/sql/create-stage
+        and https://docs.snowflake.com/en/user-guide/data-load-local-file-system
+
+        Uploading files (CSV, JSON, Parquet, Avro, ORC, XML) directly via web UI is also possible, see https://docs.snowflake.com/en/user-guide/data-load-web-ui
+    export:
+      supported: true
+      evidence: |
+        By creating a "stage", see https://docs.snowflake.com/en/sql-reference/sql/create-stage
+        and https://docs.snowflake.com/en/sql-reference/sql/get
+
+        Downloading query results as CSV is also possible in the web UI (max 100MB), see https://medium.com/akava/exporting-snowflake-query-results-abb013a2d29b
+  local_parquet:
+    import: *snowflake_local_file_import
+    export: &snowflake_local_file_export
+      supported: true
+      evidence: |
+        By creating a "stage", see https://docs.snowflake.com/en/sql-reference/sql/create-stage
+        and https://docs.snowflake.com/en/sql-reference/sql/get
+  local_json:
+    import: *snowflake_local_file_import
+    export: *snowflake_local_file_export
+  csv_on_s3:
+    import: *snowflake_local_file_import
+    export: *snowflake_local_file_export
+  csv_on_azure:
+    import: *snowflake_local_file_import
+    export: *snowflake_local_file_export
+  csv_on_google_cloud_storage:
+    import: *snowflake_local_file_import
+    export: *snowflake_local_file_export
+  oracle:
+    import:
+      supported: false
+      evidence: No documentation available
+    export:
+      supported: false
+      evidence: No documentation available
+  mysql:
+    import:
+      supported: false
+      evidence: Not supported natively
+      caveats: |
+        There is a Snowflake Connector for MySQL (see https://other-docs.snowflake.com/en/connectors/mysql6/about),
+        but this requires running a Docker image on your own infrastructure. It's also in preview.
+    export:
+      supported: false
+      evidence: Not supported natively
+      caveats: |
+        There is a Snowflake Connector for MySQL (see https://other-docs.snowflake.com/en/connectors/mysql6/about),
+        but this requires running a Docker image on your own infrastructure. It's also in preview.
+  sql_server:
+    import:
+      supported: false
+      evidence: No documentation available
+    export:
+      supported: false
+      evidence: No documentation available
+  postgres:
+    import:
+      supported: false
+      evidence: Not supported natively
+      caveats: |
+        There is a Snowflake Connector for PostgreSQL (see https://other-docs.snowflake.com/en/connectors/postgres6/about),
+        but this requires running a Docker image on your own infrastructure. It's also in preview.
+    export:
+      supported: false
+      evidence: Not supported natively
+      caveats: |
+        There is a Snowflake Connector for PostgreSQL (see https://other-docs.snowflake.com/en/connectors/postgres6/about),
+        but this requires running a Docker image on your own infrastructure. It's also in preview.
+  mongodb:
+    import:
+      supported: false
+      evidence: No documentation available
+    export:
+      supported: false
+      evidence: No documentation available
+trino: &trino
+  local_csv: &trino_no_local_filesystem_connector
+    import:
+      supported: false
+      evidence: |
+        No connector connects to the local filesystem, see https://trino.io/docs/current/connector.html
+    export:
+      supported: false
+      evidence: |
+        No connector connects to the local filesystem, see https://trino.io/docs/current/connector.html
+  local_parquet: *trino_no_local_filesystem_connector
+  local_json: *trino_no_local_filesystem_connector
+  csv_on_s3: &trino_hive_connector
+    import:
+      supported: true
+      evidence: |
+        Via Hive connector, see https://trino.io/docs/current/connector/hive.html
+      caveats: |
+        Requires a Hive metastore service (HMS) or a compatible Hive metastore implementation such as AWS Glue.
+    export:
+      supported: true
+      evidence: |
+        Via Hive connector, see https://trino.io/docs/current/connector/hive.html
+      caveats: |
+        Requires a Hive metastore service (HMS) or a compatible Hive metastore implementation such as AWS Glue.
+  csv_on_azure: *trino_hive_connector
+  csv_on_google_cloud_storage: *trino_hive_connector
+  oracle:
+    import:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/oracle.html
+    export:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/oracle.html
+  mysql:
+    import:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/mysql.html
+    export:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/mysql.html
+  sql_server:
+    import:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/sqlserver.html
+    export:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/sqlserver.html
+  postgres:
+    import:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/postgresql.html
+    export:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/postgresql.html
+  mongodb:
+    import:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/mongodb.html
+    export:
+      supported: true
+      evidence: https://trino.io/docs/current/connector/mongodb.html
+starburst:
+  local_csv: 
+    import:
+      supported: false
+      evidence: |
+        No connector connects to the local filesystem, see https://www.starburst.io/platform/connectors/
+    export:
+      supported: true
+      evidence: |
+        No connector connects to the local filesystem, see https://www.starburst.io/platform/connectors/
+
+        It is possible in the UI to download query results as CSV, see https://docs.starburst.io/starburst-galaxy/working-with-data/query-data/run-queries.html
+      caveats: |
+        This requires manual clicking in the UI.
+  local_parquet: &starburst_no_local_filesystem_connector
+    import:
+      supported: false
+      evidence: |
+        No connector connects to the local filesystem, see https://www.starburst.io/platform/connectors/
+    export:
+      supported: false
+      evidence: |
+        No connector connects to the local filesystem, see https://www.starburst.io/platform/connectors/
+  local_json: *starburst_no_local_filesystem_connector
+  csv_on_s3: &starburst_hive_connector
+    import:
+      supported: true
+      evidence: |
+        Via Hive connector, see https://docs.starburst.io/latest/connector/hive.html
+      caveats: |
+        Requires a Hive metastore service (HMS) or a compatible Hive metastore implementation such as AWS Glue.
+    export:
+      supported: true
+      evidence: |
+        Via Hive connector, see https://docs.starburst.io/latest/connector/hive.html
+      caveats: |
+        Requires a Hive metastore service (HMS) or a compatible Hive metastore implementation such as AWS Glue.
+  csv_on_azure: *starburst_hive_connector
+  csv_on_google_cloud_storage: *starburst_hive_connector
+  oracle:
+    import:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/oracle.html
+    export:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/oracle.html
+  mysql:
+    import:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/mysql.html
+    export:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/mysql.html
+  sql_server:
+    import:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/sqlserver.html
+    export:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/sqlserver.html
+  postgres:
+    import:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/postgresql.html
+    export:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/postgresql.html
+  mongodb:
+    import:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/mongodb.html
+    export:
+      supported: true
+      evidence: https://docs.starburst.io/latest/connector/mongodb.html
+athena:
+  local_csv:
+    import:
+      supported: false
+      evidence: Not designed for local files
+    export:
+      supported: true
+      evidence: |
+        Can download query results as CSV in the Athena console, see https://docs.aws.amazon.com/athena/latest/ug/saving-query-results.html
+      caveats: |
+        This requires manual clicking in the UI.
+  local_parquet: &athena_no_local_files
+    import:
+      supported: false
+      evidence: Not designed for local files
+    export:
+      supported: false
+      evidence: Not designed for local files
+  local_json: *athena_no_local_files
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: |
+        This is what it's primarily designed to do.
+        
+        See https://aws.amazon.com/blogs/big-data/analyzing-data-in-s3-using-amazon-athena/
+    export:
+      supported: true
+      evidence: |
+        Using CTAS, see https://docs.aws.amazon.com/athena/latest/ug/create-table-as.html
+  csv_on_azure: &athena_not_designed_for_this
+    import:
+      supported: false
+      evidence: |
+        Not designed for this
+    export:
+      supported: false
+      evidence: |
+        Not designed for this
+  csv_on_google_cloud_storage: *athena_not_designed_for_this
+  oracle: *athena_not_designed_for_this
+  mysql: *athena_not_designed_for_this
+  sql_server: *athena_not_designed_for_this
+  postgres: *athena_not_designed_for_this
+  mongodb: *athena_not_designed_for_this
