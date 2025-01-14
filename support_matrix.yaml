@@ -411,7 +411,7 @@ trino: &trino
       supported: true
       evidence: https://trino.io/docs/current/connector/mongodb.html
 starburst:
-  local_csv: 
+  local_csv:
     import:
       supported: false
       evidence: |
@@ -529,3 +529,287 @@ athena:
   sql_server: *athena_not_designed_for_this
   postgres: *athena_not_designed_for_this
   mongodb: *athena_not_designed_for_this
+fabric:
+  #local_csv:
+  #local_parquet
+  #local_json
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-amazon-s3-copy-activity
+    export:
+      supported: true
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-amazon-s3-copy-activity#destination
+  csv_on_azure:
+    import:
+      supported: true
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-azure-blob-storage-copy-activity
+    export:
+      supported: false
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-azure-blob-storage-copy-activity#destination
+  csv_on_google_cloud_storage:
+    import:
+      supported: true
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-google-cloud-storage-copy-activity
+    export:
+      supported: true
+      evidence: |
+        https://learn.microsoft.com/en-us/fabric/data-factory/connector-google-cloud-storage-copy-activity#destination
+  oracle:
+    import:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-oracle-database-copy-activity#source
+    export:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-oracle-database-copy-activity#destination
+  mysql:
+    import:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-mysql-database-copy-activity#source
+    export:
+      supported: false
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-mysql-database-copy-activity
+  sql_server:
+    import:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-sql-server-copy-activity#source
+    export:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-sql-server-copy-activity#destination
+  postgres:
+    import:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-postgresql-copy-activity#source
+    export:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-postgresql-copy-activity
+  mongodb:
+    import:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-mongodb-copy-activity#source
+    export:
+      supported: true
+      evidence: https://learn.microsoft.com/en-us/fabric/data-factory/connector-mongodb-copy-activity#destination
+bigquery:
+  local_csv:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/batch-loading-data
+    export:
+      supported: true
+      evidence: |
+        Can export query results to CSV in the console, see https://cloud.google.com/bigquery/docs/export-file
+      caveats: |
+        This requires manual clicking in the UI
+  local_parquet:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/batch-loading-data
+    export:
+      supported: false
+      evidence: |
+        https://cloud.google.com/bigquery/docs/export-file only lists CSV and JSON
+  local_json:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/batch-loading-data
+    export:
+      supported: true
+      evidence: |
+        Can export query results to JSON in the console, see https://cloud.google.com/bigquery/docs/export-file
+      caveats: |
+        This requires manual clicking in the UI
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/omni-aws-create-connection
+
+        Note that BigLake supports csv, see https://cloud.google.com/bigquery/docs/biglake-intro
+    export:
+      supported: true
+      evidence: |
+        Possible using "export data", see https://cloud.google.com/bigquery/docs/reference/standard-sql/export-statements#export_to_gcs
+  csv_on_azure:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/omni-azure-create-connection
+
+        Note that BigLake supports csv, see https://cloud.google.com/bigquery/docs/biglake-intro
+    export:
+      supported: true
+      evidence: |
+        Possible using "export data", see https://cloud.google.com/bigquery/docs/reference/standard-sql/export-statements#export_to_gcs
+  csv_on_google_cloud_storage:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/loading-data-cloud-storage-csv
+
+        Note that BigLake supports csv, see https://cloud.google.com/bigquery/docs/biglake-intro
+    export:
+      supported: true
+      evidence: |
+        Possible using "export data", see https://cloud.google.com/bigquery/docs/reference/standard-sql/export-statements#export_to_gcs
+  oracle:
+    import:
+      supported: true
+      evidence: |
+        https://cloud.google.com/bigquery/docs/oracle-transfer
+      caveats: |
+        This feature is subject to the "Pre-GA Offerings Terms". Pre-GA features are available "as is" and might have limited support. See https://cloud.google.com/bigquery/docs/oracle-transfer
+    export:
+      supported: false
+      evidence: https://cloud.google.com/bigquery/docs/oracle-transfer
+  mysql:
+    import:
+      supported: false
+      evidence: &bigquery_not_supported |
+        Not mentioned as supported anywhere in the BigQuery documentation.
+      caveats: |
+        GCP does provide some ETL tutorials:
+        - Using Cloud Data Fusion: https://cloud.google.com/data-fusion/docs/tutorials/replicating-data/mysql-to-bigquery
+        - Using Dataflow: https://cloud.google.com/dataflow/docs/guides/templates/provided/mysql-to-bigquery
+        - Using Datastream: https://cloud.google.com/datastream/docs/sources-mysql
+    export:
+      supported: false
+      evidence: *bigquery_not_supported
+  sql_server:
+    import:
+      supported: false
+      evidence: *bigquery_not_supported
+      caveats: |
+        GCP does provide some ETL tutorials:
+        - Using Cloud Data Fusion: https://cloud.google.com/data-fusion/docs/tutorials/replicating-data/sqlserver-to-bigquery
+        - Using Dataflow: https://cloud.google.com/dataflow/docs/guides/templates/provided/sqlserver-to-bigquery
+        - Using Datastream: https://cloud.google.com/datastream/docs/sources-sqlserver
+    export:
+      supported: false
+      evidence: *bigquery_not_supported
+  postgres:
+    import:
+      supported: false
+      evidence: *bigquery_not_supported
+      caveats: |
+        GCP does provide some ETL tutorials:
+        - Using Dataflow: https://cloud.google.com/dataflow/docs/guides/templates/provided/postgresql-to-bigquery
+        - Using Datastream: https://cloud.google.com/datastream/docs/sources-postgresql
+    export:
+      supported: false
+      evidence: *bigquery_not_supported
+  mongodb:
+    import:
+      supported: false
+      evidence: *bigquery_not_supported
+      caveats: |
+        GCP does provide an ETL tutorial:
+        - Using Dataflow: https://cloud.google.com/dataflow/docs/guides/templates/provided/mongodb-to-bigquery
+    export:
+      supported: false
+      evidence: *bigquery_not_supported
+hive:
+  local_csv: &hive_local_files
+    import:
+      supported: true
+      evidence: |
+        Use LOAD DATA: https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-InsertingdataintoHiveTablesfromqueries
+
+        Supported formats: https://cwiki.apache.org/confluence/display/Hive/FileFormats
+    export:
+      supported: true
+      evidence: |
+        https://cwiki.apache.org/confluence/display/Hive/LanguageManual+DML#LanguageManualDML-Writingdataintothefilesystemfromqueries
+
+        Supported formats: https://cwiki.apache.org/confluence/display/Hive/FileFormats
+  local_parquet: *hive_local_files
+  local_json: *hive_local_files
+  # TODO:
+  # csv_on_s3:
+  # csv_on_azure:
+  # csv_on_google_cloud_storage:
+  # oracle:
+  # mysql:
+  # sql_server:
+  # postgres:
+  # mongodb:
+redshift:
+  local_csv:
+    import: &redshift_no_local_file_import
+      supported: false
+      evidence: |
+        Upload to S3 first.
+
+        https://docs.aws.amazon.com/redshift/latest/dg/t_Loading_data.html
+    export:
+      supported: true
+      evidence: |
+        Can export query results to CSV in the UI, see https://docs.aws.amazon.com/redshift/latest/gsg/new-user-serverless.html
+      caveats: |
+        This requires manual clicking in the UI
+  local_parquet:
+    import: *redshift_no_local_file_import
+    export:
+      supported: false
+      evidence: |
+        Only CSV and JSON export is supported, see https://docs.aws.amazon.com/redshift/latest/gsg/new-user-serverless.html
+  local_json:
+    import: *redshift_no_local_file_import
+    export:
+      supported: true
+      evidence: |
+        Can export query results to JSON in the UI, see https://docs.aws.amazon.com/redshift/latest/gsg/new-user-serverless.html
+      caveats: |
+        This requires manual clicking in the UI
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-csv
+    export:
+      supported: true
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/copy-parameters-data-format.html#copy-csv
+  csv_on_azure: &redshift_generic_not_supported
+    import:
+      supported: false
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/t_Loading_data.html
+    export:
+      supported: false
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/c_unloading_data.html
+  csv_on_google_cloud_storage: *redshift_generic_not_supported
+  oracle: *redshift_generic_not_supported
+  mysql:
+    import:
+      supported: true
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/mgmt/zero-etl-using.html
+      caveats: |
+        Only if the MySQL instance is on Aurora or RDS
+    export:
+      supported: false
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/c_unloading_data.html
+  sql_server: *redshift_generic_not_supported
+  postgres:
+    import:
+      supported: true
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/mgmt/zero-etl-using.html
+      caveats: |
+        Only if the Postgres instance is on Aurora
+    export:
+      supported: false
+      evidence: |
+        https://docs.aws.amazon.com/redshift/latest/dg/c_unloading_data.html
+  mongodb: *redshift_generic_not_supported
