@@ -813,3 +813,79 @@ redshift:
       evidence: |
         https://docs.aws.amazon.com/redshift/latest/dg/c_unloading_data.html
   mongodb: *redshift_generic_not_supported
+
+dremio:
+  local_csv:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/current/sonar/query-manage/managing-data/file-upload/
+    export:
+      supported: true
+      evidence: |
+        Can download query results as CSV. See https://docs.dremio.com/cloud/sonar/query-manage/querying-data/#7-result-set-actions
+      caveats: |
+        This requires manual clicking in the UI.
+  local_parquet:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/current/sonar/query-manage/managing-data/file-upload/
+    export:
+      supported: true
+      evidence: |
+        Can download query results as CSV. See https://docs.dremio.com/cloud/sonar/query-manage/querying-data/#7-result-set-actions
+      caveats: |
+        This requires manual clicking in the UI.
+  local_json:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/current/sonar/query-manage/managing-data/file-upload/
+    export:
+      supported: true
+      evidence: |
+        Can download query results as CSV. See https://docs.dremio.com/cloud/sonar/query-manage/querying-data/#7-result-set-actions
+      caveats: |
+        This requires manual clicking in the UI.
+  csv_on_s3:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/24.3.x/sonar/data-sources/object/s3/
+    export: &dremio_export_general
+      supported: false
+      evidence: https://community.dremio.com/t/can-dremio-write-back-to-the-source-db/5144/2
+  csv_on_azure:
+    import:
+      supported: true
+      evidence: |
+        https://docs.dremio.com/24.3.x/sonar/data-sources/object/azure-storage
+    export: *dremio_export_general
+  csv_on_google_cloud_storage:
+    import:
+      supported: true
+      evidence: |
+        https://docs.dremio.com/24.3.x/sonar/data-sources/object/gcs
+    export: *dremio_export_general
+  oracle:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/current/sonar/data-sources/databases/oracle
+    export:  *dremio_export_general
+  mysql:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/24.3.x/sonar/data-sources/databases/mysql
+    export: *dremio_export_general
+  postgres:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/24.3.x/sonar/data-sources/databases/postgres
+    export: *dremio_export_general
+  sql_server:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/24.3.x/sonar/data-sources/databases/sql-server
+    export: *dremio_export_general
+  mongodb:
+    import:
+      supported: true
+      evidence: https://docs.dremio.com/24.3.x/sonar/data-sources/databases/mongo
+    export: *dremio_export_general

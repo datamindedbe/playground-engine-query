@@ -28,16 +28,6 @@
   description: "An end-to-end analytics and data platform designed for enterprises that require a unified solution"
   url: "https://www.fabric.io/"
   logo: "fabric.webp"
-- id: synapse
-  short_name: "Synapse"
-  description: "Azure Synapse Analytics is a limitless analytics service that brings together enterprise SQL data warehousing and big data analytics services"
-  url: "https://azure.microsoft.com/en-us/products/synapse-analytics"
-  logo: "synapse.png"
-- id: impala
-  short_name: "Impala"
-  description: "Modern, open source, distributed SQL query engine for open data and table formats by Apache"
-  url: "https://impala.apache.org/"
-  logo: "impala.png"
 - id: trino
   short_name: "Trino"
   description: "Open-source distributed SQL query engine designed to query large data sets distributed over one or more heterogeneous data sources"
@@ -63,6 +53,23 @@
   description: "A fully managed, petabyte-scale data warehouse service by AWS"
   url: "https://aws.amazon.com/redshift/"
   logo: "redshift.png"
+- id: dremio
+  short_name: "Dremio"
+  description: "Data Lakehouse Platform Powered by Apache Iceberg. Self-hosted and fully managed options available."
+  url: "https://www.dremio.com//"
+  logo: "dremio.png"
+
+# Disabled for now (no integrations defined yet)
+# - id: synapse
+#   short_name: "Synapse"
+#   description: "Azure Synapse Analytics is a limitless analytics service that brings together enterprise SQL data warehousing and big data analytics services"
+#   url: "https://azure.microsoft.com/en-us/products/synapse-analytics"
+#   logo: "synapse.png"
+# - id: impala
+#   short_name: "Impala"
+#   description: "Modern, open source, distributed SQL query engine for open data and table formats by Apache"
+#   url: "https://impala.apache.org/"
+#   logo: "impala.png"
 
 # Todo:
 # Presto
